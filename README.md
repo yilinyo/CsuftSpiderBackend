@@ -37,7 +37,7 @@
 将仓库克隆到本地
 
 ```bash
-https://github.com/yilinyo/CsuftSpiderBackend.git
+git clone https://github.com/yilinyo/CsuftSpiderBackend.git
 ```
 
 然后使用添加maven添加依赖，构建并打成jar包即可运行，默认在8082端口监听，如需修改请修改resource目录下yml文件💡
