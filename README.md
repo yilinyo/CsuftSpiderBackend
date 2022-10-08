@@ -85,6 +85,7 @@ git clone https://github.com/yilinyo/CsuftSpiderBackend.git
 ### 高级🧩
 
 如果你有其他想法，欢迎对源码进行修改
+具体构建原理及过程可以看这篇文章 [CsuftSpider爬虫构建](https://blog.csdn.net/qq_51725966/article/details/127218540?spm=1001.2014.3001.5502)
 
 ### 免责声明🧱
 
