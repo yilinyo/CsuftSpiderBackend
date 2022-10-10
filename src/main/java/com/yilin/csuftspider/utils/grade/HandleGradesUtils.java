@@ -118,7 +118,7 @@ public class HandleGradesUtils {
                 }
                 else if(i == 7){
                     //课程绩点
-                    grade.setGradePoint(Double.valueOf(tds.get(i).text()));
+                    grade.setGradePoint(tds.get(i).text());
 
                 }
                 else if(i == 10){
@@ -659,31 +659,78 @@ public class HandleGradesUtils {
 
                     sumScore += score;
 
-                    sumGp += g.getGradePoint() * g.getCredit();
+                    String gradePoint = g.getGradePoint();
+
+                    Double gp = 0D;
+
+                    if(!Pattern.matches(regex, gradePoint)){
+                        gp = 0D;
+                    }
+                    else{
+                        gp = Double.parseDouble(gradePoint);
+                    }
+
+
+                    sumGp += gp * g.getCredit();
 
                     sumCredit += g.getCredit();
                     num2++;
                 }else{
 
                     if(g.getStatus() == 0 && (!Pattern.matches(regex, text))){
-                        Double score = (g.getGradePoint()*10.0) + 50.0;
+
+                        String gradePoint = g.getGradePoint();
+
+                        Double gp = 0D;
+
+                        if(!Pattern.matches(regex, gradePoint)){
+                            gp = 0D;
+                        }
+                        else{
+                            gp = Double.parseDouble(gradePoint);
+                        }
+
+                        Double score = (gp*10.0) + 50.0;
                         sumScore += score;
-                        sumGp += g.getGradePoint() * g.getCredit();
+                        sumGp += gp * g.getCredit();
                         sumCredit += g.getCredit();
                         num2++;
                     }
                     else{
                         if(g.getStatus() == 1 && Pattern.matches(regex, text) && Double.parseDouble(text)>=59.9 ){
                             sumScore += 60.0;
-                            sumGp += g.getGradePoint() * 1.0;
+                            String gradePoint = g.getGradePoint();
+
+                            Double gp = 0D;
+
+                            if(!Pattern.matches(regex, gradePoint)){
+                                gp = 0D;
+                            }
+                            else{
+                                gp = Double.parseDouble(gradePoint);
+                            }
+
+
+                            sumGp += gp * 1.0;
                             sumCredit += g.getCredit();
                             num2++;
 
                         }
                         else if(g.getStatus() == 1 && !Pattern.matches(regex, text) && "及格".equals(text)){
 
+                            String gradePoint = g.getGradePoint();
+
+                            Double gp = 0D;
+
+                            if(!Pattern.matches(regex, gradePoint)){
+                                gp = 0D;
+                            }
+                            else{
+                                gp = Double.parseDouble(gradePoint);
+                            }
+
                             sumScore += 60.0;
-                            sumGp += g.getGradePoint() * 1.0;
+                            sumGp += gp * 1.0;
                             sumCredit += g.getCredit();
                             num2++;
                         }else if(g.getStatus() == 1 && !Pattern.matches(regex, text) && "不及格".equals(text)){

@@ -133,6 +133,7 @@ public class UserServiceimpl implements UserService {
         //将mySession 和 User 信息 存入本次http请求session
         HttpSession session = request.getSession();
         session.setAttribute(USER_LOGIN_STATE,mySession);
+        log.info(strName);
 
         User user = new User(strName,sid);
 

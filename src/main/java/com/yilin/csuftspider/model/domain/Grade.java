@@ -46,7 +46,7 @@ public class Grade {
      * 单科绩点
      */
 
-    private  Double gradePoint;
+    private  String gradePoint;
 
     /**
      * 课程属性 公选  必修
