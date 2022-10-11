@@ -117,6 +117,11 @@ public class UserServiceimpl implements UserService {
 
         if(title == null || (!"学生个人中心".equals(title.get(0).text()))){
 
+            if("500错误".equals(title.get(0).text())){
+
+                throw new BusinessException(ErrorCode.SYSTEM_ERROR,"学校教务系统正在维护，请稍后再重试");
+            }
+
            throw new BusinessException(ErrorCode.PARAMS_ERROR,"账号密码错误(或检查是否出现验证码)");
         }
 
