@@ -94,6 +94,12 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.12.0</version>
         </dependency>
+        <!-- AES 加密所需的 PKCS7Padding 的 Provider -->
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>1.67</version>
+        </dependency>
 
         <!--        <dependency>-->
 <!--            <groupId>org.springframework.security</groupId>-->
