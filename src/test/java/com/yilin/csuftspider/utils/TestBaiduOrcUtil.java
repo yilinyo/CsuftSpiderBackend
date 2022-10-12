@@ -124,5 +124,11 @@ public class TestBaiduOrcUtil {
 
         }
     }
+    //测试 百度 ak sk
+    @Test
+    public void testToken(){
+        BaiduORCUtils.getAuth();
+
+    }
 
 }

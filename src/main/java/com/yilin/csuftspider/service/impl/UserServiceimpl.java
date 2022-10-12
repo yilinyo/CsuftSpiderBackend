@@ -8,8 +8,10 @@ import com.yilin.csuftspider.model.User;
 import com.yilin.csuftspider.service.UserService;
 import com.yilin.csuftspider.utils.JsMachine;
 import com.yilin.csuftspider.utils.Session;
+import com.yilin.csuftspider.utils.baiduai.BaiduORCUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.client.methods.HttpGet;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -101,6 +103,23 @@ public class UserServiceimpl implements UserService {
         paramsMap.put("rmShown","1");
 
 
+        //检查是否需要验证码
+        String need = mySession.get("http://authserver.csuft.edu.cn/authserver/needCaptcha.html?" +
+                "username=" + sid +
+                "&pwdEncrypt2=pwdEncryptSalt" + "&_=" + System.currentTimeMillis());
+
+        if("true".equals(need)){
+            log.info("需要验证码");
+            byte[] bytes = mySession.getYzm("http://authserver.csuft.edu.cn/authserver/captcha.html?ts=" + System.currentTimeMillis() % 1000);
+
+            String yzm = BaiduORCUtils.accurateBasic(bytes);
+
+            paramsMap.put("captchaResponse", yzm);
+
+
+        }
+
+
         //提交表单登录
         String resText = null;
 
@@ -122,7 +141,7 @@ public class UserServiceimpl implements UserService {
                 throw new BusinessException(ErrorCode.SYSTEM_ERROR,"学校教务系统正在维护，请稍后再重试");
             }
 
-           throw new BusinessException(ErrorCode.PARAMS_ERROR,"账号密码错误(或检查是否出现验证码)");
+           throw new BusinessException(ErrorCode.PARAMS_ERROR,"账号密码错误");
         }
 
 

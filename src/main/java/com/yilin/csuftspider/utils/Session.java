@@ -87,4 +87,23 @@ public class Session {
         }
     }
 
+//验证码图片 获取byte[]
+    public byte[] getYzm(String url)  {
+
+        final Request.Builder builder = new Request.Builder();
+        builder.url(url);
+        final Request request = builder
+                .build();
+        try (Response response = mOkHttpClient.newCall(request).execute()) {
+
+//            if(response.code() != 200){
+//                return null;
+//            }
+            return response.body().bytes();
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
    }
