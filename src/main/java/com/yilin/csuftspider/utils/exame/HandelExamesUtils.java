@@ -31,7 +31,7 @@ public class HandelExamesUtils {
 
         Elements trs = table.getElementsByTag("tr");
 
-        if(trs == null || trs.size() <= 2){
+        if(trs == null || "未查询到数据".equals(trs.get(1).text())){
 
             throw new BusinessException(ErrorCode.NO_DATA,"暂时没有数据");
         }
