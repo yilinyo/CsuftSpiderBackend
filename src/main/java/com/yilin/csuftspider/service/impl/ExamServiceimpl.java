@@ -60,13 +60,13 @@ public class ExamServiceimpl implements ExamService {
     }
 
     @Override
-    public HashMap<String, String> buildParams(String xnxqid) {
+    public HashMap<String, String> buildParams(String term) {
         //构造参数
         HashMap<String, String > paramsMap = new HashMap<>();
         //学期类别 期初 期中 期末 空为所有
         paramsMap.put("xqlbmc","");
         //学期时间
-        paramsMap.put("xnxqid",xnxqid);
+        paramsMap.put("xnxqid",term);
         //学期类别 1 期初 2 期中 3 期末 空为所有
         paramsMap.put("xqlb","");
         return paramsMap;
