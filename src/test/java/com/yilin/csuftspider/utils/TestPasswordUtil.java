@@ -242,4 +242,20 @@ public class TestPasswordUtil {
         JSONObject captcha = JSONObject.parseObject(message);
         System.out.println(captcha.getJSONObject("data").getString("code_data"));
     }
+
+    @Test
+    public void test1(){
+
+
+        long l = System.currentTimeMillis();
+
+        System.out.println(l);
+
+
+        Calendar calendar = Calendar.getInstance();
+
+        long millis = calendar.getTimeInMillis();
+        System.out.println(millis);
+
+    }
 }

@@ -1,7 +1,7 @@
 package com.yilin.csuftspider.service.impl;
 import com.yilin.csuftspider.common.BaseResponse;
 import com.yilin.csuftspider.common.ErrorCode;
-import com.yilin.csuftspider.common.ResultUtils;
+
 import com.yilin.csuftspider.constant.UrlConstant;
 import com.yilin.csuftspider.exception.BusinessException;
 import com.yilin.csuftspider.model.User;
@@ -9,9 +9,11 @@ import com.yilin.csuftspider.service.UserService;
 import com.yilin.csuftspider.utils.JsMachine;
 import com.yilin.csuftspider.utils.Session;
 import com.yilin.csuftspider.utils.baiduai.BaiduORCUtils;
+
+import com.yilin.csuftspider.utils.sm4.Sm4Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.client.methods.HttpGet;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -81,6 +83,8 @@ public class UserServiceimpl implements UserService {
         int j = str.lastIndexOf("\";");
         int len = j-i+1;
         String key = str.substring(i+3,j);
+     //   sm4解密密码
+        pwd = Sm4Utils.getDecryptPwd(pwd);
 
         //使用js逆向加密获取加密密码
         String sign = JsMachine.encryptJs(pwd,key);
@@ -113,6 +117,7 @@ public class UserServiceimpl implements UserService {
             byte[] bytes = mySession.getYzm("http://authserver.csuft.edu.cn/authserver/captcha.html?ts=" + System.currentTimeMillis() % 1000);
 
             String yzm = BaiduORCUtils.accurateBasic(bytes);
+            log.info("验证码："+yzm);
 
             paramsMap.put("captchaResponse", yzm);
 
@@ -157,7 +162,7 @@ public class UserServiceimpl implements UserService {
         //将mySession 和 User 信息 存入本次http请求session
         HttpSession session = request.getSession();
         session.setAttribute(USER_LOGIN_STATE,mySession);
-        log.info(strName);
+        log.info("登陆成功: "+strName);
 
         User user = new User(strName,sid);
 

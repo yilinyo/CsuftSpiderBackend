@@ -35,9 +35,9 @@ public class BaiduORCUtils {
          */
         public static String getAuth() {
             // 官网获取的 API Key 更新为你注册的
-            String clientId = ".";
+            String clientId = "你的ak";
             // 官网获取的 Secret Key 更新为你注册的
-            String clientSecret = ".";
+            String clientSecret = "你的sk";
             return getAuth(clientId, clientSecret);
         }
 

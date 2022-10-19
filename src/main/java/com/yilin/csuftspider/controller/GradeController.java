@@ -17,6 +17,7 @@ import com.yilin.csuftspider.service.GradeService;
 import com.yilin.csuftspider.service.UserService;
 import com.yilin.csuftspider.utils.Session;
 import com.yilin.csuftspider.utils.pdf.PdfUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.omg.PortableServer.LIFESPAN_POLICY_ID;
 import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +42,7 @@ import java.util.regex.Pattern;
 
 @RestController //适用于restful风格 json
 @RequestMapping("/grade")
+@Slf4j
 public class GradeController {
 
     @Resource
@@ -250,6 +252,7 @@ public class GradeController {
         String name = user.getName();
 
         String sid = user.getSid();
+        log.info("打印"+name+"成绩单");
 
 
         String fileName = name + "的课程成绩单";

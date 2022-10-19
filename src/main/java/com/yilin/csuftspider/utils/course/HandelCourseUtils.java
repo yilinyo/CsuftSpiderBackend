@@ -1,6 +1,7 @@
 package com.yilin.csuftspider.utils.course;
 
 import com.yilin.csuftspider.model.response.CourseInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -15,6 +16,7 @@ import java.util.Arrays;
  * @version V1.0
  * @date 2022-10-07
  */
+@Slf4j
 public class HandelCourseUtils {
 
     public static CourseInfo getCourseInfo(Document d){
@@ -49,9 +51,19 @@ public class HandelCourseUtils {
 
         }
 
-        Element tr7 = trs.get(7);
-        //获取备注课程信息
-        String extra = tr7.getElementsByTag("td").get(0).text();
+        String extra = "无额外课程";
+        if(trs.size()>=8) {
+
+            Element tr7 = trs.get(7);
+            //获取备注课程信息
+            extra = tr7.getElementsByTag("td").get(0).text();
+        }
+        if(trs.size()==2) {
+
+            log.info(kbtable.text());
+
+        }
+
 
 
 
@@ -60,6 +72,7 @@ public class HandelCourseUtils {
         courseInfo.setArr(arr);
 
         courseInfo.setExtra(extra);
+        log.info("成功"+trs.size());
 
         return courseInfo;
 

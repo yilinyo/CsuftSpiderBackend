@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.example</groupId>
     <artifactId>CsuftSpiderBackend</artifactId>
-    <version>0.0.5-SNAPSHOT</version>
+    <version>0.0.5-2</version>
     <name>CsuftSpiderBackend</name>
     <description>CsuftSpiderBackend</description>
 
@@ -20,7 +20,7 @@
 <!--            <groupId>org.springframework.boot</groupId>-->
 <!--            <artifactId>spring-boot-starter-security</artifactId>-->
 <!--        </dependency>-->
-
+<!--用于pdf制作-->
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>itextpdf</artifactId>
@@ -32,6 +32,15 @@
             <artifactId>itext-asian</artifactId>
             <version>5.2.0</version>
         </dependency>
+<!--用于sm4-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.4.4</version>
+        </dependency>
+
+
+
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
@@ -95,10 +104,15 @@
             <version>3.12.0</version>
         </dependency>
         <!-- AES 加密所需的 PKCS7Padding 的 Provider -->
+<!--        <dependency>-->
+<!--            <groupId>org.bouncycastle</groupId>-->
+<!--            <artifactId>bcprov-jdk15on</artifactId>-->
+<!--            <version>1.67</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk15on</artifactId>
-            <version>1.67</version>
+            <version>1.66</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -122,17 +136,20 @@
             <scope>compile</scope>
         </dependency>
 <!--    baidu ocr-->
-        <dependency>
-            <groupId>com.baidu.aip</groupId>
-            <artifactId>java-sdk</artifactId>
-            <version>4.8.0</version>
-        </dependency>
-
-        <!--        <dependency>-->
-<!--            <groupId>org.springframework.security</groupId>-->
-<!--            <artifactId>spring-security-test</artifactId>-->
-<!--            <scope>test</scope>-->
+<!--        <dependency>-->
+<!--            <groupId>com.baidu.aip</groupId>-->
+<!--            <artifactId>java-sdk</artifactId>-->
+<!--            <version>4.8.0</version>-->
 <!--        </dependency>-->
+
+<!--        如果jdk大于8需要这个包-->
+<!--        <dependency>-->
+<!--            <groupId>org.openjdk.nashorn</groupId>-->
+<!--            <artifactId>nashorn-core</artifactId>-->
+<!--            <version>15.3</version>-->
+<!--        </dependency>-->
+
+
     </dependencies>
 
     <dependencyManagement>
