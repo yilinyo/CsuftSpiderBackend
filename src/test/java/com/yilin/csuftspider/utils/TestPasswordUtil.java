@@ -4,6 +4,7 @@ package com.yilin.csuftspider.utils;
 import com.alibaba.fastjson2.JSONObject;
 import com.yilin.csuftspider.common.ErrorCode;
 import com.yilin.csuftspider.exception.BusinessException;
+import com.yilin.csuftspider.utils.grade.HandleGradesUtils;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 import org.apache.http.*;
@@ -247,15 +248,8 @@ public class TestPasswordUtil {
     public void test1(){
 
 
-        long l = System.currentTimeMillis();
-
-        System.out.println(l);
-
-
-        Calendar calendar = Calendar.getInstance();
-
-        long millis = calendar.getTimeInMillis();
-        System.out.println(millis);
-
+        System.out.println(HandleGradesUtils.handelGp("45.3"));
+        System.out.println(HandleGradesUtils.handelGp("95.3"));
+        System.out.println(HandleGradesUtils.handelGp("优"));
     }
 }

@@ -7,6 +7,7 @@ import com.yilin.csuftspider.model.domain.GradeAnalysis;
 import com.yilin.csuftspider.model.domain.LevelGrade;
 import com.yilin.csuftspider.model.response.GradeAnalysisInfo;
 import com.yilin.csuftspider.model.response.GradesInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -26,6 +27,7 @@ import java.util.regex.Pattern;
  * @version V1.0
  * @date 2022-09-27
  */
+@Slf4j
 public class HandleGradesUtils {
 
 
@@ -118,7 +120,19 @@ public class HandleGradesUtils {
                 }
                 else if(i == 7){
                     //课程绩点
-                    grade.setGradePoint(tds.get(i).text());
+                    String gpTmp = tds.get(i).text();
+                    String grr = tds.get(4).text();
+
+                    String regex = "[0-9]*\\.?[0-9]+";
+                    //有些 同学 绩点 栏为空 ，需要手动计算
+                   if(Pattern.matches(regex, gpTmp)){
+                       grade.setGradePoint(gpTmp);
+                   }else{
+
+                       grade.setGradePoint(String.valueOf(handelGp(grr)));
+                   }
+
+
 
                 }
                 else if(i == 10){
@@ -664,7 +678,7 @@ public class HandleGradesUtils {
                     Double gp = 0D;
 
                     if(!Pattern.matches(regex, gradePoint)){
-                        gp = 0D;
+                        gp = handelGp(text);
                     }
                     else{
                         gp = Double.parseDouble(gradePoint);
@@ -684,7 +698,7 @@ public class HandleGradesUtils {
                         Double gp = 0D;
 
                         if(!Pattern.matches(regex, gradePoint)){
-                            gp = 0D;
+                            gp = handelGp(text);
                         }
                         else{
                             gp = Double.parseDouble(gradePoint);
@@ -704,7 +718,7 @@ public class HandleGradesUtils {
                             Double gp = 0D;
 
                             if(!Pattern.matches(regex, gradePoint)){
-                                gp = 0D;
+                                gp = handelGp(text);
                             }
                             else{
                                 gp = Double.parseDouble(gradePoint);
@@ -723,7 +737,7 @@ public class HandleGradesUtils {
                             Double gp = 0D;
 
                             if(!Pattern.matches(regex, gradePoint)){
-                                gp = 0D;
+                                gp = handelGp(text);
                             }
                             else{
                                 gp = Double.parseDouble(gradePoint);
@@ -755,7 +769,6 @@ public class HandleGradesUtils {
         double gpa = sumGp / sumCredit;
         double apf = sumScore / (double)num2;
 
-
         double basicPoint = sumScore2 / sumCredit2;
 
 
@@ -769,6 +782,52 @@ public class HandleGradesUtils {
 
         return new Info(gpa,apf,sumCredit,basicPoint);
 
+
+
+
+
+    }
+
+//根据成绩返回Gp 工具类
+    public static double handelGp(String grade){
+
+        String regex = "[0-9]*\\.?[0-9]+";
+
+        if("不及格".equals(grade)){
+           return 0;
+        }else if("及格".equals(grade)){
+
+            return 1.0;
+
+        }else if("中".equals(grade)){
+
+            return 2.0;
+
+        }else if("良".equals(grade)){
+
+           return 3.0;
+
+        }else if("优".equals(grade)){
+
+            return 4.0;
+
+        }else if("合格".equals(grade)){
+
+            return 1.0;
+
+        }else if(Pattern.matches(regex, grade)){
+
+            double gradeTmp =  handelDouble( (Double.parseDouble(grade) - 50.0) / 10.0 );
+            // 小于 0.1 直接 近似为 0
+            if(gradeTmp <= 0.1){
+                return  0;
+            }
+            return gradeTmp;
+        }else{
+            log.info("额外成绩样式:" + grade);
+            return 0;
+
+        }
 
 
 

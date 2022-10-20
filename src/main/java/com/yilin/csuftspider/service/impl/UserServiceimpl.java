@@ -162,7 +162,7 @@ public class UserServiceimpl implements UserService {
         //将mySession 和 User 信息 存入本次http请求session
         HttpSession session = request.getSession();
         session.setAttribute(USER_LOGIN_STATE,mySession);
-        log.info("登陆成功: "+strName);
+        log.info("登陆成功: "+strName + ",学号："+ sid);
 
         User user = new User(strName,sid);
 
