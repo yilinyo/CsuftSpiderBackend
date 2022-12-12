@@ -17,6 +17,7 @@
 ### 服务端环境💻
 
 配置能连接学校内网的centos系统服务器，配置教程可参考 [服务器连接校园网](https://blog.csdn.net/qq_51725966/article/details/127216999?spm=1001.2014.3001.5502)
+现在我们学校已经提供了可以外网访问的webvpn入口，可以忽略给校园网配置内网，如果你的学校不支持，你仍然需要配置
 
 使用[jdk8](https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html)环境最佳,已知jdk17测试存在问题
 
