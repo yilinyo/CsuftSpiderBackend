@@ -3,6 +3,7 @@ package com.yilin.csuftspider.utils.sm4;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.crypto.SmUtil;
 import cn.hutool.crypto.symmetric.SymmetricCrypto;
+import com.yilin.csuftspider.constant.ConstantData;
 
 /**
  * Title: Sm4Utils
@@ -17,7 +18,7 @@ public class Sm4Utils {
     /**
      * 约定密钥16位 与前端约定 如 6666666666666666
      */
-   static String key="6666666666666666";
+   static String key= ConstantData.sm4Salt;
 
     /**
      * 解密密码

@@ -1,109 +1,164 @@
 package com.yilin.csuftspider.utils;
 
 
-import okhttp3.*;
 
+import com.yilin.csuftspider.common.ErrorCode;
+import com.yilin.csuftspider.exception.BusinessException;
+import lombok.extern.slf4j.Slf4j;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.apache.http.Consts;
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 
 /**
  * Title: Session
  * Description: TODO
- *  Session 工具类 自动保存cookie ，便于爬取数据
+ *  Session 工具类 自动保存cookie ，便于爬取数据 更换实现方法 更换okhttp3 为 httpClient实现，可自动管理cookie，前者bug太多所以替换为后者
  * @author Yilin
  * @version V1.0
- * @date 2022-09-26
+ * @date 2022-12-12
  */
+@Slf4j
 public class Session {
-    //okHttpClient 支持重定向 支持拦截器 支持cookiejar
 
 
-    private final OkHttpClient mOkHttpClient = new OkHttpClient.Builder().followRedirects(true).addInterceptor(new BasicParamsInterceptor()).cookieJar(new CookieJar() {
-        private final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
+    private final CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 
-        @Override
-        public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
 
-            cookieStore.put(url.host(), cookies);
+    public CloseableHttpClient getHttpClient() {
+        return httpClient;
+    }
+
+    //get 请求
+    public String get(String url)  {
+
+        HttpGet httpGet = new HttpGet(url);
+
+        httpGet.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36");
+        try {
+            HttpResponse response = httpClient.execute(httpGet);
+
+            return EntityUtils.toString(response.getEntity());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        @Override
-        public List<Cookie> loadForRequest(HttpUrl url) {
-            List<Cookie> cookies = cookieStore.get(url.host());
-            return  (cookies != null) ? cookies : new ArrayList<Cookie>();
-        }
-    }).build();
 
 
+        return null;
+    }
 
-
-    /**
-     * @param url  要请求的url
-     * @param  paramsMap post的请求参数
-     * @return  post的返回结果
-     */
+    //post 请求 自动处理重定向
     public String post(String url, HashMap<String, String > paramsMap){
 
-        FormBody.Builder formBodyBuilder = new FormBody.Builder();
+
+        List<NameValuePair> params = new ArrayList<>();
+
         Set<String> keySet = paramsMap.keySet();
         for(String key:keySet) {
             String value = paramsMap.get(key);
-            formBodyBuilder.add(key,value);
+
+            params.add(new BasicNameValuePair(key,value));
 
         }
-        FormBody formBody = formBodyBuilder.build();
 
-        Request request = new Request
-                .Builder()
-                .post(formBody)
-                .url(url)
-                .build();
+        HttpPost httpPost = new HttpPost(url);
+        httpPost.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36");
+
+        httpPost.setEntity(new UrlEncodedFormEntity(params, Consts.UTF_8));
 
 
-        try (Response response = mOkHttpClient.newCall(request).execute()) {
+        try {
+            CloseableHttpResponse response = httpClient.execute(httpPost);
 
-            String  respStr = response.body().string();
-            return respStr;
-        }catch (Exception e){
+
+        // 三次重定向 均是 get 请求
+            while (response.getStatusLine().getStatusCode() == 302) {
+
+                HttpGet httpGet;
+                Header header = response.getFirstHeader("location");
+                String newUri = header.getValue();
+                httpGet = new HttpGet(newUri);
+                httpGet.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36");
+                response = httpClient.execute(httpGet);
+            }
+            String res = EntityUtils.toString(response.getEntity());
+
+
+
+            return  res;
+
+        } catch (IOException e) {
             e.printStackTrace();
-            return null;
         }
+
+        return  null;
     }
-
-    public String get(String url)  {
-
-        final Request.Builder builder = new Request.Builder();
-        builder.url(url);
-        final Request request = builder
-                .build();
-        try (Response response = mOkHttpClient.newCall(request).execute()) {
-
-//            if(response.code() != 200){
-//                return null;
-//            }
-            return response.body().string();
-        }catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-//验证码图片 获取byte[]
+    //获取图片验证码
     public byte[] getYzm(String url)  {
+        HttpGet httpGet;
+        httpGet = new HttpGet(url);
+        log.info(url);
+        httpGet.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36");
+        try {
+            CloseableHttpResponse  response = httpClient.execute(httpGet);
+            // 4kb 足够了，下载了 50 张验证码发现大小均在 2200 ~ 2300 字节左右，也可以根据 Entity 的 ContentLength 来动态创建
+//            byte[] bytes = new byte[1024 * 4];
 
-        final Request.Builder builder = new Request.Builder();
-        builder.url(url);
-        final Request request = builder
-                .build();
-        try (Response response = mOkHttpClient.newCall(request).execute()) {
+            InputStream is = response.getEntity().getContent();
+            byte[] bytes = inputToBytes(is);
 
-//            if(response.code() != 200){
-//                return null;
-//            }
-            return response.body().bytes();
-        }catch (Exception e){
+            return bytes;
+        } catch (IOException e) {
             e.printStackTrace();
-            return null;
         }
+
+        return null;
+
     }
 
-   }
+
+    /**
+     * inputstream 转byte数组
+     */
+
+    public byte[] inputToBytes(InputStream inputStream) throws IOException {
+
+        ByteArrayOutputStream swapStream  = new ByteArrayOutputStream();
+
+        byte[] buff = new byte[100];
+        int read = 0;
+        while ((read = inputStream.read(buff,0,100))>0){
+
+
+            swapStream.write(buff,0,read);
+
+        }
+
+        byte[] res = swapStream.toByteArray();
+
+        return res;
+
+
+
+
+    }
+
+
+
+}

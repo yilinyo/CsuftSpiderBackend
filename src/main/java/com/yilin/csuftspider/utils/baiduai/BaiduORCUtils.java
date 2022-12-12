@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 
+import com.yilin.csuftspider.constant.ConstantData;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,9 +36,9 @@ public class BaiduORCUtils {
          */
         public static String getAuth() {
             // 官网获取的 API Key 更新为你注册的
-            String clientId = "你的ak";
+            String clientId = ConstantData.baiduAk;
             // 官网获取的 Secret Key 更新为你注册的
-            String clientSecret = "你的sk";
+            String clientSecret = ConstantData.baiduSk;
             return getAuth(clientId, clientSecret);
         }
 

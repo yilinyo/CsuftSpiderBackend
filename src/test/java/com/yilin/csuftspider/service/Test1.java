@@ -42,8 +42,8 @@ public class Test1 {
         request.setCharacterEncoding("UTF-8");
 
 
-        String sid = "学号";
-        String pwd = "密码";
+        String sid = "数据脱敏";
+        String pwd = "数据脱敏";
 
 
         userService.login(sid,pwd,request);

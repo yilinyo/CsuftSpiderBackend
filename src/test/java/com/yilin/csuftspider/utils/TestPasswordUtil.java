@@ -9,6 +9,7 @@ import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 import org.apache.http.*;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -21,6 +22,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -40,6 +42,7 @@ import java.util.Map;
  * @author : Xbai-hang
  * @since : 2022/10/11
  */
+@SpringBootTest
 public class TestPasswordUtil {
 
     private static final Tesseract tesseract = new Tesseract();
@@ -58,12 +61,12 @@ public class TestPasswordUtil {
     /**
      * 教务处账号
      */
-    private static final String USERNAME = "敏感数据脱敏";
+    private static final String USERNAME = "学号";
 
     /**
      * 教务处密码
      */
-    private static final String PASSWORD = "敏感数据脱敏";
+    private static final String PASSWORD = "密码";
 
     /**
      * 打码平台 KEY
@@ -93,7 +96,7 @@ public class TestPasswordUtil {
     public void testLogin() throws IOException, TesseractException {
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         // HttpClient httpClient = HttpClients.createDefault();
-        HttpGet httpGet = new HttpGet("http://authserver.csuft.edu.cn/authserver/login?service=http%3A%2F%2Fjwgl.csuft.edu.cn%2F");
+        HttpGet httpGet = new HttpGet("http://authserver.webvpn.csuft.edu.cn/authserver/login?service=http%3A%2F%2Fwebvpn.csuft.edu.cn%2Fusers%2Fauth%2Fcas%2Fcallback%3Furl%3Dhttp%253A%252F%252Fwebvpn.csuft.edu.cn%252F");
         httpGet.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36");
         HttpResponse response = httpClient.execute(httpGet);
         Document document = Jsoup.parse(EntityUtils.toString(response.getEntity()));
@@ -110,12 +113,12 @@ public class TestPasswordUtil {
         nvps.add(new BasicNameValuePair("username", USERNAME));
         nvps.add(new BasicNameValuePair("password", PasswordUtil.encrypt(PASSWORD, salt)));
         nvps.add(new BasicNameValuePair("lt", mm.get("lt")));
-        nvps.add(new BasicNameValuePair("dllt", mm.get("dllt")));
+        nvps.add(new BasicNameValuePair("dllt","userNamePasswordLogin"));
         nvps.add(new BasicNameValuePair("execution", mm.get("execution")));
         nvps.add(new BasicNameValuePair("_eventId", mm.get("_eventId")));
         nvps.add(new BasicNameValuePair("rmShown", mm.get("rmShown")));
         // 加入验证码判断的逻辑
-        httpGet = new HttpGet("http://authserver.csuft.edu.cn/authserver/needCaptcha.html?" +
+        httpGet = new HttpGet("http://authserver.webvpn.csuft.edu.cn/authserver/needCaptcha.html?" +
                 "username=" + USERNAME +
                 "&pwdEncrypt2=pwdEncryptSalt" + "&_=" + System.currentTimeMillis());
         httpGet.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36");
@@ -125,7 +128,7 @@ public class TestPasswordUtil {
         if (useCaptcha) {
             System.out.println("需要使用验证码");
             // 获取验证码
-            httpGet = new HttpGet("http://authserver.csuft.edu.cn/authserver/captcha.html?ts=" + System.currentTimeMillis() % 1000);
+            httpGet = new HttpGet("http://authserver.webvpn.csuft.edu.cn/authserver/captcha.html?ts=" + System.currentTimeMillis() % 1000);
             httpGet.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36");
             response = httpClient.execute(httpGet);
             // 4kb 足够了，下载了 50 张验证码发现大小均在 2200 ~ 2300 字节左右，也可以根据 Entity 的 ContentLength 来动态创建
@@ -161,10 +164,12 @@ public class TestPasswordUtil {
         }
 
 
-        HttpPost httpPost = new HttpPost("http://authserver.csuft.edu.cn/authserver/login?service=http%3A%2F%2Fjwgl.csuft.edu.cn%2F");
+        HttpPost httpPost = new HttpPost("http://authserver.webvpn.csuft.edu.cn/authserver/login?service=http%3A%2F%2Fwebvpn.csuft.edu.cn%2Fusers%2Fauth%2Fcas%2Fcallback%3Furl%3Dhttp%253A%252F%252Fwebvpn.csuft.edu.cn%252F");
         httpPost.setEntity(new UrlEncodedFormEntity(nvps, Consts.UTF_8));
 
         response = httpClient.execute(httpPost);
+
+        System.out.println(EntityUtils.toString(response.getEntity()));
         // 三次重定向 均是 get 请求
         while (response.getStatusLine().getStatusCode() == 302) {
             Header header = response.getFirstHeader("location");
@@ -176,12 +181,15 @@ public class TestPasswordUtil {
         String res = EntityUtils.toString(response.getEntity());
         Header location = response.getFirstHeader("location");
         // 登陆成功的时候有时会重定向到 http://authserver.csuft.edu.cn/authserver/index.do 页面，响应头也含有 location，但是是已经登陆成功的情况
-        if (location != null && location.getValue().contains("authserver/login")) {
-            String errorMsg = Jsoup.parse(res).getElementById("msg").text();
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR, errorMsg);
-        }
-        System.out.println(location);
-        System.out.println(res);
+
+
+//        httpGet = new HttpGet("http://jwgl.webvpn.csuft.edu.cn");
+//
+//        CloseableHttpResponse execute = httpClient.execute(httpGet);
+//
+//
+//
+//        System.out.println(EntityUtils.toString(execute.getEntity()));
     }
 
     /**

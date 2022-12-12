@@ -8,6 +8,7 @@ import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -19,6 +20,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ import java.util.Map;
  * @version V1.0
  * @date 2022-10-12
  */
+@SpringBootTest
 public class TestBaiduOrcUtil {
 
     /**
@@ -52,7 +55,7 @@ public class TestBaiduOrcUtil {
 
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         // HttpClient httpClient = HttpClients.createDefault();
-        HttpGet httpGet = new HttpGet("http://authserver.csuft.edu.cn/authserver/login?service=http%3A%2F%2Fjwgl.csuft.edu.cn%2F");
+        HttpGet httpGet = new HttpGet("http://authserver.webvpn.csuft.edu.cn/authserver/login?service=http%3A%2F%2Fwebvpn.csuft.edu.cn%2Fusers%2Fauth%2Fcas%2Fcallback%3Furl%3Dhttp%253A%252F%252Fwebvpn.csuft.edu.cn%252F");
         httpGet.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36");
         HttpResponse response = httpClient.execute(httpGet);
         Document document = Jsoup.parse(EntityUtils.toString(response.getEntity()));
@@ -74,7 +77,7 @@ public class TestBaiduOrcUtil {
         nvps.add(new BasicNameValuePair("_eventId", mm.get("_eventId")));
         nvps.add(new BasicNameValuePair("rmShown", mm.get("rmShown")));
         // 加入验证码判断的逻辑
-        httpGet = new HttpGet("http://authserver.csuft.edu.cn/authserver/needCaptcha.html?" +
+        httpGet = new HttpGet("http://authserver.webvpn.csuft.edu.cn/authserver/needCaptcha.html?" +
                 "username=" + USERNAME +
                 "&pwdEncrypt2=pwdEncryptSalt" + "&_=" + System.currentTimeMillis());
         httpGet.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36");
@@ -84,11 +87,11 @@ public class TestBaiduOrcUtil {
         if (useCaptcha) {
             System.out.println("需要使用验证码");
             // 获取验证码
-            httpGet = new HttpGet("http://authserver.csuft.edu.cn/authserver/captcha.html?ts=" + System.currentTimeMillis() % 1000);
+            httpGet = new HttpGet("http://authserver.webvpn.csuft.edu.cn/authserver/captcha.html?ts=" + System.currentTimeMillis() % 1000);
             httpGet.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36");
             response = httpClient.execute(httpGet);
             // 4kb 足够了，下载了 50 张验证码发现大小均在 2200 ~ 2300 字节左右，也可以根据 Entity 的 ContentLength 来动态创建
-            byte[] bytes = new byte[1024 * 4];
+            byte[] bytes = new byte[1024 * 20];
             int read = response.getEntity().getContent().read(bytes);
             if (read == -1) { // 获取图片失败
                 return;
@@ -98,7 +101,7 @@ public class TestBaiduOrcUtil {
 
             nvps.add(new BasicNameValuePair("captchaResponse", yzm));
 
-            HttpPost httpPost = new HttpPost("http://authserver.csuft.edu.cn/authserver/login?service=http%3A%2F%2Fjwgl.csuft.edu.cn%2F");
+            HttpPost httpPost = new HttpPost("http://authserver.webvpn.csuft.edu.cn/authserver/login?service=http%3A%2F%2Fwebvpn.csuft.edu.cn%2Fusers%2Fauth%2Fcas%2Fcallback%3Furl%3Dhttp%253A%252F%252Fwebvpn.csuft.edu.cn%252F");
             httpPost.setEntity(new UrlEncodedFormEntity(nvps, Consts.UTF_8));
 
             response = httpClient.execute(httpPost);
@@ -119,6 +122,14 @@ public class TestBaiduOrcUtil {
             }
             System.out.println(location);
             System.out.println(res);
+
+            httpGet = new HttpGet("http://jwgl.webvpn.csuft.edu.cn");
+
+            CloseableHttpResponse execute = httpClient.execute(httpGet);
+
+            String s = execute.getEntity().getContent().toString();
+
+            System.out.println(s);
 
 
 

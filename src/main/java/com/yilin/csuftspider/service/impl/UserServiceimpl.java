@@ -3,13 +3,15 @@ import com.yilin.csuftspider.common.BaseResponse;
 import com.yilin.csuftspider.common.ErrorCode;
 
 import com.yilin.csuftspider.constant.UrlConstant;
+
 import com.yilin.csuftspider.exception.BusinessException;
 import com.yilin.csuftspider.model.User;
 import com.yilin.csuftspider.service.UserService;
 import com.yilin.csuftspider.utils.JsMachine;
 import com.yilin.csuftspider.utils.Session;
-import com.yilin.csuftspider.utils.baiduai.BaiduORCUtils;
 
+
+import com.yilin.csuftspider.utils.baiduai.BaiduORCUtils;
 import com.yilin.csuftspider.utils.sm4.Sm4Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -27,10 +29,10 @@ import java.util.HashMap;
 /**
  * Title: UserServiceimpl
  * Description: TODO
- *
+ * 更新 实现 方法逻辑
  * @author Yilin
  * @version V1.0
- * @date 2022-09-27
+ * @date 2022-12-12
  */
 
 @Service
@@ -83,8 +85,8 @@ public class UserServiceimpl implements UserService {
         int j = str.lastIndexOf("\";");
         int len = j-i+1;
         String key = str.substring(i+3,j);
-     //   sm4解密密码
-        pwd = Sm4Utils.getDecryptPwd(pwd);
+////        sm4解密密码
+//        pwd = Sm4Utils.getDecryptPwd(pwd);
 
         //使用js逆向加密获取加密密码
         String sign = JsMachine.encryptJs(pwd,key);
@@ -108,13 +110,13 @@ public class UserServiceimpl implements UserService {
 
 
         //检查是否需要验证码
-        String need = mySession.get("http://authserver.csuft.edu.cn/authserver/needCaptcha.html?" +
+        String need = mySession.get("http://authserver.webvpn.csuft.edu.cn/authserver/needCaptcha.html?" +
                 "username=" + sid +
                 "&pwdEncrypt2=pwdEncryptSalt" + "&_=" + System.currentTimeMillis());
 
         if("true".equals(need)){
             log.info("需要验证码");
-            byte[] bytes = mySession.getYzm("http://authserver.csuft.edu.cn/authserver/captcha.html?ts=" + System.currentTimeMillis() % 1000);
+            byte[] bytes = mySession.getYzm("http://authserver.webvpn.csuft.edu.cn/authserver/captcha.html?ts=" + System.currentTimeMillis() % 1000);
 
             String yzm = BaiduORCUtils.accurateBasic(bytes);
             log.info("验证码："+yzm);
@@ -129,6 +131,8 @@ public class UserServiceimpl implements UserService {
         String resText = null;
 
         resText = mySession.post(UrlConstant.LOGIN_URL,paramsMap);
+
+        resText = mySession.get("http://jwgl.webvpn.csuft.edu.cn");
         //请求失败
         if(resText == null){
 

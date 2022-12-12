@@ -3,9 +3,9 @@ package com.yilin.csuftspider.constant;
 /**
  * Title: UrlConstant
  * Description: TODO
- * URL 常量
+ * URL 常量  学校更新 webvpn 版可以远程访问 查看以前版本请版本回退
  * @version V1.0
- * @date 2022-09-27
+ * @date 2022-12-12
  */
 public interface UrlConstant {
 
@@ -24,13 +24,13 @@ public interface UrlConstant {
      * 基础   url
      */
 
-    String BASE_URL = "http://jwgl.csuft.edu.cn";
+    String BASE_URL = "http://jwgl.webvpn.csuft.edu.cn";
 
     /**
      * 登录 url
      */
 
-    String LOGIN_URL = "http://authserver.csuft.edu.cn/authserver/login?service=http%3A%2F%2Fjwgl.csuft.edu.cn%2F";
+    String LOGIN_URL = "http://authserver.webvpn.csuft.edu.cn/authserver/login?service=http%3A%2F%2Fwebvpn.csuft.edu.cn%2Fusers%2Fauth%2Fcas%2Fcallback%3Furl%3Dhttp%253A%252F%252Fwebvpn.csuft.edu.cn%252F";
 
     /**
      * 课程成绩 url (可以带参数）
