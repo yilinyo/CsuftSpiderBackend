@@ -24,10 +24,10 @@
 
 ### api配置🔊
 验证码调用百度的api开放平台 [ORC](https://ai.baidu.com/ai-doc/OCR/)
-自行获取AK,SK在 BaiduORCUtils 中替换
+自行获取AK,SK在 com/yilin/csuftspider/constant/UrlConstant.java 中替换
 
 
-密码解密前后端约定使用SM4加密，自行与前端约定在 Sm4Utils 中设置密钥
+密码解密前后端约定使用SM4加密，自行与前端约定在 com/yilin/csuftspider/constant/UrlConstant.java 中设置密钥
 
 ### 客户端环境📱
 
