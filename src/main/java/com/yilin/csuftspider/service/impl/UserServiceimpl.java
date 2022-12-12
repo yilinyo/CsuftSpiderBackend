@@ -85,8 +85,8 @@ public class UserServiceimpl implements UserService {
         int j = str.lastIndexOf("\";");
         int len = j-i+1;
         String key = str.substring(i+3,j);
-////        sm4解密密码
-//        pwd = Sm4Utils.getDecryptPwd(pwd);
+//        sm4解密密码
+        pwd = Sm4Utils.getDecryptPwd(pwd);
 
         //使用js逆向加密获取加密密码
         String sign = JsMachine.encryptJs(pwd,key);

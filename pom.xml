@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.example</groupId>
     <artifactId>CsuftSpiderBackend</artifactId>
-    <version>0.0.5-2</version>
+    <version>0.0.6</version>
     <name>CsuftSpiderBackend</name>
     <description>CsuftSpiderBackend</description>
 
@@ -16,11 +16,11 @@
     </properties>
 
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-security</artifactId>-->
-<!--        </dependency>-->
-<!--用于pdf制作-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-security</artifactId>-->
+        <!--        </dependency>-->
+        <!--用于pdf制作-->
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>itextpdf</artifactId>
@@ -32,7 +32,7 @@
             <artifactId>itext-asian</artifactId>
             <version>5.2.0</version>
         </dependency>
-<!--用于sm4-->
+        <!--用于sm4-->
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
@@ -52,19 +52,19 @@
             <artifactId>jsoup</artifactId>
             <version>1.13.1</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-thymeleaf</artifactId>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-thymeleaf</artifactId>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.baomidou</groupId>-->
-<!--            <artifactId>mybatis-plus-boot-starter</artifactId>-->
-<!--            <version>3.4.2</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.baomidou</groupId>-->
+        <!--            <artifactId>mybatis-plus-boot-starter</artifactId>-->
+        <!--            <version>3.4.2</version>-->
+        <!--        </dependency>-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -72,11 +72,11 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>mysql</groupId>-->
-<!--            <artifactId>mysql-connector-java</artifactId>-->
-<!--            <scope>runtime</scope>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>mysql</groupId>-->
+        <!--            <artifactId>mysql-connector-java</artifactId>-->
+        <!--            <scope>runtime</scope>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
@@ -104,11 +104,11 @@
             <version>3.12.0</version>
         </dependency>
         <!-- AES 加密所需的 PKCS7Padding 的 Provider -->
-<!--        <dependency>-->
-<!--            <groupId>org.bouncycastle</groupId>-->
-<!--            <artifactId>bcprov-jdk15on</artifactId>-->
-<!--            <version>1.67</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.bouncycastle</groupId>-->
+        <!--            <artifactId>bcprov-jdk15on</artifactId>-->
+        <!--            <version>1.67</version>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk15on</artifactId>
@@ -135,19 +135,19 @@
             <version>0.0.20131108.vaadin1</version>
             <scope>compile</scope>
         </dependency>
-<!--    baidu ocr-->
-<!--        <dependency>-->
-<!--            <groupId>com.baidu.aip</groupId>-->
-<!--            <artifactId>java-sdk</artifactId>-->
-<!--            <version>4.8.0</version>-->
-<!--        </dependency>-->
+        <!--    baidu ocr-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.baidu.aip</groupId>-->
+        <!--            <artifactId>java-sdk</artifactId>-->
+        <!--            <version>4.8.0</version>-->
+        <!--        </dependency>-->
 
-<!--        如果jdk大于8需要这个包-->
-<!--        <dependency>-->
-<!--            <groupId>org.openjdk.nashorn</groupId>-->
-<!--            <artifactId>nashorn-core</artifactId>-->
-<!--            <version>15.3</version>-->
-<!--        </dependency>-->
+        <!--        如果jdk大于8需要这个包-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.openjdk.nashorn</groupId>-->
+        <!--            <artifactId>nashorn-core</artifactId>-->
+        <!--            <version>15.3</version>-->
+        <!--        </dependency>-->
 
 
     </dependencies>
