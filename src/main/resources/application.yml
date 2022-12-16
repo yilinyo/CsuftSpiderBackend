@@ -10,11 +10,24 @@ spring:
 #    driver-class-name: com.mysql.cj.jdbc.Driver
   session:
     timeout: 86400
-#mybatis-plus Config
+# redis Config
+  redis:
+    port: 6379 #端口号
+    password:  #输入redis数据库密码
+    host: 127.0.0.1    #输入ip地址
+
+    jedis:
+      pool:
+        max-idle: 6    #最大空闲数
+        max-active: 10 #最大连接数
+        min-idle: 2    #最小空闲数
+    timeout: 2000   #连接超时
+
 server:
   port: 8082
   servlet:
     context-path: /api
+#mybatis-plus Config
 #mybatis-plus:
 #  configuration:
 #    map-underscore-to-camel-case: false

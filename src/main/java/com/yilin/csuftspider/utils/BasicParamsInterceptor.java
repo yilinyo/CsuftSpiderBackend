@@ -13,7 +13,7 @@ import java.io.IOException;
  *  11/29 122
  *  2022 - 12/12 不再维护此 拦截器 ,okhttp3 已弃用，更换为 httpclient ，此类已弃用
  */
-
+@Deprecated
 public class BasicParamsInterceptor  implements Interceptor{
     @Override
     public Response intercept(Chain chain) throws IOException {
