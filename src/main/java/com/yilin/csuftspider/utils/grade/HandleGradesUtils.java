@@ -93,7 +93,7 @@ public class HandleGradesUtils {
                 if(i == 0){
                     //编号
                     if("未查询到数据".equals(tds.get(i).text())){
-                        throw new BusinessException(ErrorCode.NULL_ERROR,"没有您想要的数据");
+                        throw new BusinessException(ErrorCode.NULL_ERROR,"如果你不是新生请前往教务系统完成教师评教才能正常查询");
                     }
                     grade.setId(Integer.valueOf(tds.get(i).text()));
                 }
