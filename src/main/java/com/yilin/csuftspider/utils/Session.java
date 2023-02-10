@@ -2,11 +2,8 @@ package com.yilin.csuftspider.utils;
 
 
 
-import com.yilin.csuftspider.common.ErrorCode;
-import com.yilin.csuftspider.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.Request;
-import okhttp3.Response;
+
 import org.apache.http.Consts;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;

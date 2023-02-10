@@ -2,6 +2,8 @@ package com.yilin.csuftspider.model;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * Title: User
  * Description: TODO
@@ -11,7 +13,7 @@ import lombok.Data;
  * @date 2022-09-28
  */
 @Data
-public class User {
+public class User implements Serializable {
     /**
      * 姓名
      */

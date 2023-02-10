@@ -17,6 +17,7 @@ import java.util.Set;
  * @version V1.0
  * @date 2022-12-12
  */
+@Deprecated
 public class Session1 {
     //okHttpClient 支持重定向 支持拦截器 支持cookiejar
 

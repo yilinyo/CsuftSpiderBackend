@@ -24,4 +24,6 @@ public interface  UserService   {
      */
     User login(String sid, String pwd, HttpServletRequest request);
 
+
+
 }
