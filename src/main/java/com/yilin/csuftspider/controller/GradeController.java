@@ -8,18 +8,18 @@ import com.yilin.csuftspider.common.ResultUtils;
 import com.yilin.csuftspider.controller.utils.SessionCheck;
 import com.yilin.csuftspider.exception.BusinessException;
 import com.yilin.csuftspider.model.User;
-import com.yilin.csuftspider.model.domain.Grade;
 import com.yilin.csuftspider.model.domain.LevelGrade;
 import com.yilin.csuftspider.model.request.GradeSearchRequest;
 import com.yilin.csuftspider.model.response.GradeAnalysisInfo;
+import com.yilin.csuftspider.model.response.GradeStatus;
 import com.yilin.csuftspider.model.response.GradesInfo;
 import com.yilin.csuftspider.service.GradeService;
+import com.yilin.csuftspider.service.JedisService;
 import com.yilin.csuftspider.service.UserService;
 import com.yilin.csuftspider.utils.Session;
 import com.yilin.csuftspider.utils.pdf.PdfUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.omg.PortableServer.LIFESPAN_POLICY_ID;
-import org.springframework.http.HttpRequest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -47,6 +47,11 @@ public class GradeController {
 
     @Resource
     private GradeService gradeService;
+
+    @Resource
+    private JedisService jedisService;
+
+
 
 
     //获得全部课程成绩
@@ -151,6 +156,7 @@ public class GradeController {
             sb.append(nian1).append(nian2);
 
             year = sb.toString();
+
         }else {
 
 
@@ -214,9 +220,6 @@ public class GradeController {
 
         Session mySession = SessionCheck.isAlive(request);
 
-        //获取所有课程成绩信息
-
-        GradeAnalysisInfo gradeAnalysis = gradeService.getGradeAnalysis(mySession);
 
         User user =(User) request.getSession().getAttribute(UserService.USER_LOGIN_INFO);
 
@@ -224,6 +227,11 @@ public class GradeController {
 
             throw new BusinessException(ErrorCode.SYSTEM_ERROR,"请重新登录");
         }
+        //获取所有课程成绩信息
+
+        GradeAnalysisInfo gradeAnalysis = gradeService.getGradeAnalysis(mySession,user.getSid());
+
+
 
         gradeAnalysis.setSid(user.getSid());
 
@@ -231,6 +239,34 @@ public class GradeController {
         return ResultUtils.success(gradeAnalysis);
 
     }
+
+    //是否有成绩更新
+    @GetMapping("/getStatus")
+    public BaseResponse<GradeStatus> getStatus(HttpServletRequest request){
+
+        // 登陆检查
+
+        Session mySession = SessionCheck.isAlive(request);
+        User user =(User) request.getSession().getAttribute(UserService.USER_LOGIN_INFO);
+
+        if(user == null || user.getSid()==null){
+
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR,"请重新登录");
+        }
+
+        String sid = user.getSid();
+        //获取所有课程成绩信息
+
+        GradeStatus gradeStatus = jedisService.getGradeStatus(mySession, sid);
+        //预热
+        gradeService.preCacheGrade(mySession,sid);
+
+        return ResultUtils.success(gradeStatus);
+
+    }
+
+
+
 
     @PostMapping("/getPdf")
     public void getPdf(HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException {
@@ -240,7 +276,7 @@ public class GradeController {
 
         Session mySession = SessionCheck.isAlive(request);
 
-        GradeAnalysisInfo gradeAnalysis = gradeService.getGradeAnalysis(mySession);
+//        GradeAnalysisInfo gradeAnalysis = gradeService.getGradeAnalysis(mySession);
 
         User user =(User) request.getSession().getAttribute(UserService.USER_LOGIN_INFO);
 
@@ -306,6 +342,8 @@ public class GradeController {
         }
 
     }
+
+
 
 
 

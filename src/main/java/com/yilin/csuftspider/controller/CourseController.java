@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * Title: CourseController
@@ -36,6 +37,9 @@ public class CourseController {
         // 登陆检查
 
         Session mySession = SessionCheck.isAlive(request);
+
+
+
 
         String week = null;
 

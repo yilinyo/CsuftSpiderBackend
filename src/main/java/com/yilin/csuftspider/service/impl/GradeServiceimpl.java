@@ -10,13 +10,19 @@ import com.yilin.csuftspider.service.GradeService;
 import com.yilin.csuftspider.utils.Session;
 import com.yilin.csuftspider.utils.grade.HandleGradesUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Title: GradeServiceimpl
@@ -31,6 +37,8 @@ import java.util.List;
 public class GradeServiceimpl  implements GradeService {
 
 
+    @Resource
+    RedisTemplate redisTemplate1;
 
     //全部成绩
 
@@ -171,7 +179,47 @@ public class GradeServiceimpl  implements GradeService {
     }
     //成绩分析
     @Override
-    public GradeAnalysisInfo getGradeAnalysis(Session mySession) {
+    public GradeAnalysisInfo getGradeAnalysis(Session mySession, String uid) {
+
+
+        // 缓存
+
+        String redisKey = String.format("com:yilin:csuftspider:cache:csinfo:%s",uid);
+
+        ValueOperations<String, Object> stringObjectValueOperations= redisTemplate1.opsForValue();
+
+
+       GradeAnalysisInfo gradeAnalysisInfo = (GradeAnalysisInfo)stringObjectValueOperations.get(redisKey);
+
+        // 有缓存 return
+        if(gradeAnalysisInfo!=null){
+
+            return gradeAnalysisInfo;
+        }
+
+        //没缓存
+
+
+        gradeAnalysisInfo = getGradeAnalysisInfoAndSet(mySession, redisKey, stringObjectValueOperations);
+
+
+        return  gradeAnalysisInfo;
+
+
+
+    }
+
+    /**
+     * 读取信息并且 set到redis
+     * @param mySession
+     * @param redisKey
+     * @param stringObjectValueOperations
+     * @return
+     */
+
+    @NotNull
+    private GradeAnalysisInfo getGradeAnalysisInfoAndSet(Session mySession, String redisKey, ValueOperations<String, Object> stringObjectValueOperations) {
+        GradeAnalysisInfo gradeAnalysisInfo;
         //构造参数
         HashMap<String, String > paramsMap = buildParams("");
 
@@ -190,13 +238,15 @@ public class GradeServiceimpl  implements GradeService {
 
         //处理html 并返成绩表
 
-        GradeAnalysisInfo analysis = HandleGradesUtils.getAnalysisUtil(document);
+        gradeAnalysisInfo = HandleGradesUtils.getAnalysisUtil(document);
 
-
-        return  analysis;
-
-
-
+        // 存入缓存 60s
+        try {
+            stringObjectValueOperations.set(redisKey,gradeAnalysisInfo,60000, TimeUnit.MILLISECONDS);
+        } catch (Exception e) {
+            log.info("redis.error: "+e);
+        }
+        return gradeAnalysisInfo;
     }
 
     @Override
@@ -214,6 +264,33 @@ public class GradeServiceimpl  implements GradeService {
         paramsMap.put("xsfs","all");
 
         return  paramsMap;
+
+    }
+
+    /**
+     * 缓存预热
+     * 预热成绩分析
+     * @param mySession
+     */
+    @Async
+    @Override
+    public void preCacheGrade(Session mySession,String uid) {
+
+        //  必须预热
+
+
+        // 缓存
+
+        log.info(Thread.currentThread().getName()+"开始执行缓存预热");
+
+        String redisKey = String.format("com:yilin:csuftspider:cache:csinfo:%s",uid);
+        ValueOperations<String, Object> stringObjectValueOperations= redisTemplate1.opsForValue();
+
+        getGradeAnalysisInfoAndSet(mySession, redisKey, stringObjectValueOperations);
+
+
+
+
 
     }
 }

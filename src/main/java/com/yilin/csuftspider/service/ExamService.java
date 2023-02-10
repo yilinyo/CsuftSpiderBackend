@@ -20,7 +20,7 @@ public interface ExamService {
      * 根据学期查询考试信息
      */
 
-    List<Exam> getExamsByTerm(Session mySession, String term);
+    List<Exam> getExamsByTerm(Session mySession,String term);
     /**
      * 查询参数构造
      */

@@ -3,8 +3,10 @@ package com.yilin.csuftspider.service.impl;
 import com.yilin.csuftspider.common.ErrorCode;
 import com.yilin.csuftspider.constant.UrlConstant;
 import com.yilin.csuftspider.exception.BusinessException;
+import com.yilin.csuftspider.model.User;
 import com.yilin.csuftspider.model.response.CourseInfo;
 import com.yilin.csuftspider.service.CourseService;
+import com.yilin.csuftspider.service.UserService;
 import com.yilin.csuftspider.utils.Session;
 import com.yilin.csuftspider.utils.course.HandelCourseUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +29,16 @@ import java.util.HashMap;
 @Service
 @Slf4j
 public class CourseServiceimpl implements CourseService {
+
+
+
+
+
     @Override
-    public CourseInfo getCourseInfo(Session mySession,String week) {
+    public CourseInfo getCourseInfo(Session mySession, String week) {
+
+
+
 
 
         //构造参数
@@ -50,6 +60,11 @@ public class CourseServiceimpl implements CourseService {
 
         CourseInfo courseInfo = HandelCourseUtils.getCourseInfo(document);
 
+
+
+
+
+
         return courseInfo;
 
 
@@ -58,6 +73,7 @@ public class CourseServiceimpl implements CourseService {
      *    参数构造
      */
 
+
     @Override
     public HashMap<String, String> buildParams(String week) {
         //构造参数
@@ -65,9 +81,13 @@ public class CourseServiceimpl implements CourseService {
         //周次
         paramsMap.put("zc",week);
         //不填默认为当前学期
-        paramsMap.put("xnxq01id","");
+        paramsMap.put("xnxq01id","2022-2023-2");
         //是否放大默认1
         paramsMap.put("sfFd","1");
+
         return paramsMap;
     }
+
+
+
 }

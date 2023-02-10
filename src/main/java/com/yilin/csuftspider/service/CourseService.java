@@ -26,4 +26,9 @@ public interface CourseService {
      * 课表查询参数构造
      */
     HashMap<String, String > buildParams(String week);
+
+
+
+
+
 }

@@ -55,12 +55,18 @@ public interface GradeService {
      * 获取成绩分析
      */
 
-    GradeAnalysisInfo getGradeAnalysis(Session mySession);
+    GradeAnalysisInfo getGradeAnalysis(Session mySession,String uid);
 
     /**
      * 成绩查询参数构造
      */
     HashMap<String, String > buildParams(String kksj);
+
+    /**
+     * 登陆立马预热
+     * @param mySession
+     */
+    void preCacheGrade(Session mySession,String uid);
 
 
 
