@@ -10,6 +10,8 @@
 
 **功能**：免校园网/VPN访问✈，成绩查询🙋‍♂️、成绩起伏变化分析📈、成绩统计✍、成绩单PDF导出📄、课表查询👀、考试信息查询📜...
 
+**功能上新** 成绩更新通知📢、校历📆、教务通知🔊、知网入口📚、一键评教🕹
+
 此仓库源码仅适用于CSUFT学子，其它学校仅供参考
 
 
@@ -66,34 +68,56 @@ git clone https://github.com/yilinyo/CsuftSpiderBackend.git
 
 1. 导航栏功能模块(PC端💻)
 
-![image-20221008221342593](https://xingqiu-tuchuang-1256524210.cos.ap-shanghai.myqcloud.com/12570/image-20221008221342593.png)
+![image-20221008221342593](https://yilin-1307688338.cos.ap-nanjing.myqcloud.com/blog/image-20221008221342593.png)
 
 
 
-<img src="https://xingqiu-tuchuang-1256524210.cos.ap-shanghai.myqcloud.com/12570/image-20221008220303617.png" alt="image-20221008220303617" style="zoom: 80%;" />
+<img src="https://yilin-1307688338.cos.ap-nanjing.myqcloud.com/blog/image-20221008220303617.png" alt="image-20221008220303617" style="zoom: 80%;" />
 
 2. 成绩展示（移动端📱）和导出 (PC端💻)
 
-![image-20221008220640866](https://xingqiu-tuchuang-1256524210.cos.ap-shanghai.myqcloud.com/12570/image-20221008220640866.png)
+![image-20221008220640866](https://yilin-1307688338.cos.ap-nanjing.myqcloud.com/blog/image-20221008220640866.png)
 
 3. 成绩分析（移动端📱）
 
-![image-20221008221004628](https://xingqiu-tuchuang-1256524210.cos.ap-shanghai.myqcloud.com/12570/image-20221008221004628.png)
+![image-20221008221004628](https://yilin-1307688338.cos.ap-nanjing.myqcloud.com/blog/image-20221008221004628.png)
 
 4. 课表查看（移动端📱）
 
-   ![image-20221008221559609](https://xingqiu-tuchuang-1256524210.cos.ap-shanghai.myqcloud.com/12570/image-20221008221559609.png)
+   ![image-20221008221559609](https://yilin-1307688338.cos.ap-nanjing.myqcloud.com/blog/image-20221008221559609.png)
 
 5. 考试信息查看(PC端💻)
 
-   ![image-20221008222346010](https://xingqiu-tuchuang-1256524210.cos.ap-shanghai.myqcloud.com/12570/image-20221008222346010.png)
+   ![image-20221008222346010](https://yilin-1307688338.cos.ap-nanjing.myqcloud.com/blog/image-20221008222346010.png)
+
+ 6. 成绩更新通知（移动端📱）
+
+    ![](https://yilin-1307688338.cos.ap-nanjing.myqcloud.com/blog/20230316160853.png)
+
+    7. 一键评教 （移动端📱）
+
+       ![image-20230316161205606](https://yilin-1307688338.cos.ap-nanjing.myqcloud.com/blog/image-20230316161205606.png)
+
+       
+
+    
 
 ### 高级🧩
 
-如果你有其他想法，欢迎对源码进行修改
+截止2023-3-16，官方项目用户人数5k+，未来考虑迁移小程序。如果你有其他想法，欢迎对源码进行修改
 具体构建原理及过程可以看这篇文章 [CsuftSpider爬虫构建](https://blog.csdn.net/qq_51725966/article/details/127218540?spm=1001.2014.3001.5502)
+
+二次开发注意登录本项目进行了加密，如不需要请自行注解。
+
+
 
 ### 免责声明🧱
 
 本项目与学校官方无关，仅个人通过本项目加深网络爬虫、网络接口、开发设计理解应用，请勿用于违法犯罪或商务活动。
+
+
+
+
+## Star ✨
+[![Star History Chart](https://api.star-history.com/svg?repos=yilinyo/CsuftSpiderBackend&type=Date)](https://star-history.com/#yilinyo/CsuftSpiderBackend&Date)
 
