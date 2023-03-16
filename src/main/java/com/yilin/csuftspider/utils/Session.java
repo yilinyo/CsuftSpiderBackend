@@ -2,6 +2,7 @@ package com.yilin.csuftspider.utils;
 
 
 
+import javafx.util.Pair;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.http.Consts;
@@ -51,7 +52,7 @@ public class Session {
         try {
             HttpResponse response = httpClient.execute(httpGet);
 
-            return EntityUtils.toString(response.getEntity());
+            return EntityUtils.toString(response.getEntity(),"UTF-8");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -59,6 +60,8 @@ public class Session {
 
         return null;
     }
+
+
 
     //post 请求 自动处理重定向
     public String post(String url, HashMap<String, String > paramsMap){
@@ -94,7 +97,8 @@ public class Session {
                 httpGet.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36");
                 response = httpClient.execute(httpGet);
             }
-            String res = EntityUtils.toString(response.getEntity());
+
+            String res = EntityUtils.toString(response.getEntity(),"UTF-8");
 
 
 
@@ -106,6 +110,56 @@ public class Session {
 
         return  null;
     }
+
+    //post 请求 自动处理重定向
+    public String postByOrderParams(String url, List<Pair<String,String>> lists){
+
+
+        List<NameValuePair> params = new ArrayList<>();
+
+
+        for(Pair<String,String> key:lists) {
+
+
+            params.add(new BasicNameValuePair(key.getKey(),key.getValue()));
+
+        }
+
+        HttpPost httpPost = new HttpPost(url);
+        httpPost.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36");
+
+        httpPost.setEntity(new UrlEncodedFormEntity(params, Consts.UTF_8));
+
+
+        try {
+            CloseableHttpResponse response = httpClient.execute(httpPost);
+
+
+            // 三次重定向 均是 get 请求
+            while (response.getStatusLine().getStatusCode() == 302) {
+
+                HttpGet httpGet;
+                Header header = response.getFirstHeader("location");
+                String newUri = header.getValue();
+                httpGet = new HttpGet(newUri);
+                httpGet.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36");
+                response = httpClient.execute(httpGet);
+            }
+
+            String res = EntityUtils.toString(response.getEntity(),"UTF-8");
+
+
+
+            return  res;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return  null;
+    }
+
+
     //获取图片验证码
     public byte[] getYzm(String url)  {
         HttpGet httpGet;

@@ -20,6 +20,7 @@ public enum ErrorCode {
     AUTH_ERROR(40101,"没有权限！","");
 
 
+
     /**
      * 状态码信息
      */

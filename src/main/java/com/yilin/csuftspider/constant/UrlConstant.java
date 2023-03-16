@@ -26,6 +26,13 @@ public interface UrlConstant {
 
     String BASE_URL = "http://jwgl.webvpn.csuft.edu.cn";
 
+
+    /**
+     * 基础 教务处通知  url
+     */
+
+    String BASE_NOTICE_URL = "https://jwc.csuft.edu.cn/tzgg/";
+
     /**
      * 登录 url
      */
@@ -62,6 +69,19 @@ public interface UrlConstant {
      */
 
     String COURSE_TABEL_URL = BASE_URL + "/jsxsd/xskb/xskb_list.do";
+
+    /**
+     * 评教 url
+     */
+
+
+    String  EVALUATION_URL  = BASE_URL + "/jsxsd/xspj/xspj_find.do";
+
+    /**
+     * 评教提交url
+     */
+
+    String  EVALUATION_COMMIT_URL  = BASE_URL + "/jsxsd/xspj/xspj_save.do";
 
 
 

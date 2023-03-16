@@ -705,6 +705,8 @@ public class HandleGradesUtils {
                         }
 
                         Double score = (gp*10.0) + 50.0;
+
+                        //todo 判断score >=59.9
                         sumScore += score;
                         sumGp += gp * g.getCredit();
                         sumCredit += g.getCredit();

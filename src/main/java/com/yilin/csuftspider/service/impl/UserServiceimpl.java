@@ -7,6 +7,7 @@ import com.yilin.csuftspider.constant.UrlConstant;
 import com.yilin.csuftspider.exception.BusinessException;
 import com.yilin.csuftspider.model.User;
 import com.yilin.csuftspider.service.UserService;
+import com.yilin.csuftspider.utils.IPUtil;
 import com.yilin.csuftspider.utils.JsMachine;
 import com.yilin.csuftspider.utils.Session;
 
@@ -20,10 +21,15 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.data.redis.core.HyperLogLogOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -39,7 +45,8 @@ import java.util.HashMap;
 @Slf4j
 public class UserServiceimpl implements UserService {
 
-
+    @Resource
+    RedisTemplate redisTemplate1;
     @Override
     public User login(String sid, String pwd, HttpServletRequest request) {
 
@@ -132,6 +139,21 @@ public class UserServiceimpl implements UserService {
 
         resText = mySession.post(UrlConstant.LOGIN_URL,paramsMap);
 
+        //检查是否登陆成功
+        Document document1 = Jsoup.parse(resText);
+
+        Elements title = document1.getElementsByTag("title");
+
+        if(title == null || (!"中南林业科技大学 WebVPN".equals(title.get(0).text()))){
+
+            if("统一身份认证".equals(title.get(0).text())){
+
+                throw new BusinessException(ErrorCode.SYSTEM_ERROR,"学号或密码错误");
+            }
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"学校教务系统正在维护，请稍后再重试");
+
+        }
+
         resText = mySession.get("http://jwgl.webvpn.csuft.edu.cn");
         //请求失败
         if(resText == null){
@@ -139,18 +161,13 @@ public class UserServiceimpl implements UserService {
             return null;
         }
         //检查是否登陆成功
-        Document document1 = Jsoup.parse(resText);
+        document1 = Jsoup.parse(resText);
 
-        Elements title = document1.getElementsByTag("title");
+         title = document1.getElementsByTag("title");
 
         if(title == null || (!"学生个人中心".equals(title.get(0).text()))){
 
-            if("500错误".equals(title.get(0).text())){
-
-                throw new BusinessException(ErrorCode.SYSTEM_ERROR,"学校教务系统正在维护，请稍后再重试");
-            }
-
-           throw new BusinessException(ErrorCode.PARAMS_ERROR,"账号密码错误");
+           throw new BusinessException(ErrorCode.PARAMS_ERROR,"学校教务系统正在维护，请稍后再重试");
         }
 
 
@@ -166,11 +183,21 @@ public class UserServiceimpl implements UserService {
         //将mySession 和 User 信息 存入本次http请求session
         HttpSession session = request.getSession();
         session.setAttribute(USER_LOGIN_STATE,mySession);
-        log.info("登陆成功: "+strName + ",学号："+ sid);
+
 
         User user = new User(strName,sid);
 
         session.setAttribute(USER_LOGIN_INFO,user);
+
+        //统计ip日活跃量
+        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+        String redisKey = String.format("com:yilin:csuftspider:dau:%s",sd.format(new Date()));
+//        String ipAdress = IPUtil.getIpAddress(request);
+        HyperLogLogOperations<String,String> hyperlog = redisTemplate1.opsForHyperLogLog();
+        hyperlog.add(redisKey,sid);
+        log.info("登陆成功: "+strName + ",学号："+ sid);
+
+        log.info("今日活跃用户人数：" + hyperlog.size(redisKey).intValue());
 
         return user;
 

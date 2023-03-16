@@ -144,7 +144,7 @@ public class TestPasswordUtil {
             // 效果较差
             // BufferedImage image = ImageIO.read(response.getEntity().getContent());
             //
-            // String result = tesseract.doOCR(image);
+//             String result = tesseract.doOCR(image);
             // System.out.println(result);
             // System.out.println(removeDirtyData(result));
 
