@@ -27,6 +27,37 @@ server:
   port: 8082
   servlet:
     context-path: /api
+
+
+#自定义配置
+csuftspider:
+#bark for ios
+# https://bark.day.app/#/tutorial bark 推送到 IOS
+  bark:
+      title: CSUFTSPIDER #推送标题
+      serverUrl: https://api.day.app #推送 bark url
+      apiKey: #apiKey
+      level: active #推送显示方式active：默认值，系统会立即亮屏显示通知 timeSensitive：时效性通知，可在专注状态下显示通知。passive：仅将通知添加到通知列表，不会亮屏提醒。
+      autoCopy: 1  #是否复制
+      group: 开发通知  #分组名称
+      icon: #推送图标
+
+# baidu api for ocr
+#验证码图像识别 api https://ai.baidu.com/ai-doc/OCR/
+
+  baidu:
+      ocr:
+        baiduAk:
+        baiduSk:
+
+# 系统System Settings
+  system:
+    #系统登录
+    login:
+      method: 0 #0 默认开启 登录sm4加密（salt需要配置密钥）,1 不开启加密
+      salt:  #SM4加密密钥 16位
+
+
 #mybatis-plus Config
 #mybatis-plus:
 #  configuration:
