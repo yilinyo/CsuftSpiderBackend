@@ -40,6 +40,8 @@ public class JedisUtils {
     public Integer getNum(String key) {
         Jedis jedis = this.getJedis();
 
+
+
         Boolean exists = jedis.exists(key);
 
         Integer num = -1;
@@ -80,6 +82,17 @@ public class JedisUtils {
 
 
         this.close(jedis);
+
+    }
+
+    /**
+     * 获取db key数量
+     */
+    public Long getSize() {
+
+        Jedis jedis = this.getJedis();
+
+        return jedis.dbSize();
 
     }
 

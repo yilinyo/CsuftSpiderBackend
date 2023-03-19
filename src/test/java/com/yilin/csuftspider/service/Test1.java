@@ -1,6 +1,8 @@
 package com.yilin.csuftspider.service;
 
 import com.yilin.csuftspider.constant.UrlConstant;
+import com.yilin.csuftspider.job.StaticJob;
+import com.yilin.csuftspider.utils.BarkUtils;
 import com.yilin.csuftspider.utils.JsMachine;
 import com.yilin.csuftspider.utils.PasswordUtil;
 import com.yilin.csuftspider.utils.Session;
@@ -13,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import javax.annotation.Resource;
+import java.security.MessageDigest;
 import java.util.HashMap;
 
 /**
@@ -33,6 +36,10 @@ public class Test1 {
 
 
     @Resource
+    private StaticJob staticJob;
+
+
+    @Resource
     private UserService userService;
 
     //测试 userService.login 带验证码
@@ -42,8 +49,8 @@ public class Test1 {
         request.setCharacterEncoding("UTF-8");
 
 
-        String sid = "数据脱敏";
-        String pwd = "数据脱敏";
+        String sid = "学号";
+        String pwd = "密码";
 
 
         userService.login(sid,pwd,request);
@@ -246,6 +253,17 @@ public class Test1 {
 
 
 
+
+
+
+
+    }
+
+
+    @Test
+    public void testBark(){
+
+        staticJob.doStatic();
 
 
 

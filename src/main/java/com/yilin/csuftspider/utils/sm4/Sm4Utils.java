@@ -18,7 +18,7 @@ public class Sm4Utils {
     /**
      * 约定密钥16位 与前端约定 如 6666666666666666
      */
-   static String key= ConstantData.sm4Salt;
+   static String key= ConstantData.SM4SALT;
 
     /**
      * 解密密码

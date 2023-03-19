@@ -21,10 +21,16 @@ public interface UrlConstant {
 //    self.checkEvaluation = self.host + '/jsxsd/xspj/xspj_find.do?Ves632DSdyV=NEW_XSD_JXPJ'
 
     /**
-     * 基础   url
+     * 基础   url web vpn 版
      */
 
-    String BASE_URL = "http://jwgl.webvpn.csuft.edu.cn";
+    String BASE_URL_WEB_VPN = "http://jwgl.webvpn.csuft.edu.cn";
+
+    /**
+     * 基础   url  版
+     */
+
+    String BASE_URL = "http://jwgl.csuft.edu.cn";
 
 
     /**
@@ -34,10 +40,27 @@ public interface UrlConstant {
     String BASE_NOTICE_URL = "https://jwc.csuft.edu.cn/tzgg/";
 
     /**
-     * 登录 url
+     * 登录 url web vpn 版
      */
 
-    String LOGIN_URL = "http://authserver.webvpn.csuft.edu.cn/authserver/login?service=http%3A%2F%2Fwebvpn.csuft.edu.cn%2Fusers%2Fauth%2Fcas%2Fcallback%3Furl%3Dhttp%253A%252F%252Fwebvpn.csuft.edu.cn%252F";
+    String LOGIN_URL_WEB_VPN = "http://authserver.webvpn.csuft.edu.cn/authserver/login?service=http%3A%2F%2Fwebvpn.csuft.edu.cn%2Fusers%2Fauth%2Fcas%2Fcallback%3Furl%3Dhttp%253A%252F%252Fwebvpn.csuft.edu.cn%252F";
+
+    /**
+     * 登录   url  版
+     */
+
+    String LOGIN_URL = "http://authserver.csuft.edu.cn/authserver/login?service=http%3A%2F%2Fjwgl.csuft.edu.cn%2F";
+    /**
+     * 是否需要  验证码  web vpn 版
+     */
+
+    String Captcha_URL_WEB_VPN = "http://authserver.webvpn.csuft.edu.cn/authserver/needCaptcha.html?";
+
+    /**
+     * 是否需要  验证码   url  版
+     */
+
+    String Captcha_URL = "http://authserver.csuft.edu.cn/authserver/needCaptcha.html?";
 
     /**
      * 课程成绩 url (可以带参数）
