@@ -37,7 +37,7 @@ public class ExamServiceimpl implements ExamService {
         //构造参数
         HashMap<String, String> params = buildParams(term);
         //发起请求
-        String res =  mySession.post(UrlConstant.EXAME_INFO_FORM_URL,params);
+        String res =  mySession.post(UrlConstant.BASE_URL+UrlConstant.EXAME_INFO_FORM_URL,params);
 
 
         //判断 是否成功请求

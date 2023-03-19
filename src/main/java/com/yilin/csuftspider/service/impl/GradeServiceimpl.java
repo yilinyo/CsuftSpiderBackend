@@ -48,7 +48,7 @@ public class GradeServiceimpl  implements GradeService {
         HashMap<String, String > paramsMap = buildParams("");
 
         //发起请求
-        String res = mySession.post(UrlConstant.GRADES_TABEL_URL, paramsMap);
+        String res = mySession.post(UrlConstant.BASE_URL+UrlConstant.GRADES_TABEL_URL, paramsMap);
 
         //判断 是否成功请求
         Document document = Jsoup.parse(res);
@@ -84,7 +84,7 @@ public class GradeServiceimpl  implements GradeService {
         HashMap<String, String > paramsMap = buildParams(term);
 
         //发起请求
-        String res = mySession.post(UrlConstant.GRADES_TABEL_URL, paramsMap);
+        String res = mySession.post(UrlConstant.BASE_URL+UrlConstant.GRADES_TABEL_URL, paramsMap);
 
         //判断 是否成功请求
         Document document = Jsoup.parse(res);
@@ -119,7 +119,7 @@ public class GradeServiceimpl  implements GradeService {
         HashMap<String, String > paramsMap = buildParams("");
 
         //发起请求
-        String res = mySession.post(UrlConstant.GRADES_TABEL_URL, paramsMap);
+        String res = mySession.post(UrlConstant.BASE_URL+UrlConstant.GRADES_TABEL_URL, paramsMap);
 
         //判断 是否成功请求
         Document document = Jsoup.parse(res);
@@ -153,7 +153,7 @@ public class GradeServiceimpl  implements GradeService {
 
 
         //发起请求
-        String res =  mySession.get(UrlConstant.LEVEL_GRADES_TABLE_URL);
+        String res =  mySession.get(UrlConstant.BASE_URL+UrlConstant.LEVEL_GRADES_TABLE_URL);
 
 //        >等级考试成绩
 
@@ -224,7 +224,7 @@ public class GradeServiceimpl  implements GradeService {
         HashMap<String, String > paramsMap = buildParams("");
 
         //发起请求
-        String res = mySession.post(UrlConstant.GRADES_TABEL_URL, paramsMap);
+        String res = mySession.post(UrlConstant.BASE_URL+UrlConstant.GRADES_TABEL_URL, paramsMap);
 
         //判断 是否成功请求
         Document document = Jsoup.parse(res);

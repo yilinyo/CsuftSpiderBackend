@@ -25,9 +25,9 @@ import org.springframework.stereotype.Component;
 @Data
 public class BarkUtils implements InitializingBean {
     @Value("${csuftspider.bark.serverUrl}")
-    private  String serverUrl = "http://api.yctor.icu";
+    private  String serverUrl ;
     @Value("${csuftspider.bark.apiKey}")
-    private  String apiKey = "MJgJocqQf8CC5DAPaxh7sd";
+    private  String apiKey ;
 
     @Value("${csuftspider.bark.title}")
     private  String title = "CSUFTSPIDER";

@@ -28,7 +28,7 @@ public class JedisServiceImpl implements JedisService {
 
     @Override
     public GradeStatus getGradeStatus(Session mySession,String sid) {
-        String s = mySession.get(UrlConstant.GRADES_TABEL_URL);
+        String s = mySession.get(UrlConstant.BASE_URL+UrlConstant.GRADES_TABEL_URL);
 
         //判断 是否成功请求
         Document document = Jsoup.parse(s);

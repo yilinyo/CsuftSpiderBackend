@@ -36,7 +36,7 @@ public class EvaluationServiceimpl implements EvaluationService {
     public List<String> getNums(Session mySession) {
 
         //拿到 学期评教 首页
-        String s = mySession.get(UrlConstant.EVALUATION_URL);
+        String s = mySession.get(UrlConstant.BASE_URL+UrlConstant.EVALUATION_URL);
 
 
 
@@ -202,7 +202,7 @@ public class EvaluationServiceimpl implements EvaluationService {
         params.add(new Pair<>("jynr",text));
 
 
-        s.postByOrderParams(UrlConstant.EVALUATION_COMMIT_URL, params);
+        s.postByOrderParams(UrlConstant.BASE_URL+UrlConstant.EVALUATION_COMMIT_URL, params);
 
         //睡眠 500ms
         try {

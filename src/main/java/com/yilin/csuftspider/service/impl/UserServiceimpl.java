@@ -73,9 +73,11 @@ public class UserServiceimpl implements UserService {
         //优先走 webvpn
 
         if((strName =loginByWebVpn(mySession,sid,pwd,request) )== null) {
+
+
             // webvpn 不通走 才easyconnect
             //第一次进入登录 页面，并拿到 隐藏 表单数据
-            String firstText = mySession.get(UrlConstant.LOGIN_URL);
+            String firstText = mySession.get(UrlConstant.BASE_URL_WEB );
 
             //请求失败
             if (firstText == null) {
@@ -147,6 +149,8 @@ public class UserServiceimpl implements UserService {
              user = new User(strName, sid);
 
             session.setAttribute(USER_LOGIN_INFO, user);
+
+            UrlConstant.BASE_URL = UrlConstant.BASE_URL_WEB;
 
 
         }
@@ -273,7 +277,7 @@ public class UserServiceimpl implements UserService {
             //提交表单登录
             String resText = null;
 
-            resText = mySession.post(UrlConstant.LOGIN_URL,paramsMap);
+            resText = mySession.post(UrlConstant.LOGIN_URL_WEB_VPN,paramsMap);
 
             //检查是否登陆成功
             Document document1 = Jsoup.parse(resText);
@@ -321,6 +325,8 @@ public class UserServiceimpl implements UserService {
             //将mySession 和 User 信息 存入本次http请求session
             HttpSession session = request.getSession();
             session.setAttribute(USER_LOGIN_STATE,mySession);
+
+            UrlConstant.BASE_URL = UrlConstant.BASE_URL_WEB_VPN;
 
 
 

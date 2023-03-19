@@ -44,7 +44,7 @@ public class CourseServiceimpl implements CourseService {
         //构造参数
         HashMap<String, String> params = buildParams(week);
         //发起请求
-        String res =  mySession.post(UrlConstant.COURSE_TABEL_URL,params);
+        String res =  mySession.post(UrlConstant.BASE_URL+UrlConstant.COURSE_TABEL_URL,params);
 
 
 
